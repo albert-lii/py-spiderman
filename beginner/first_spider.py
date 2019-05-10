@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-爬虫大致流程如下：
+一个简单的爬虫示例，爬虫大致流程如下：
 1. 向目标 url 发送请求
 2. 获取请求的响应内容
 3. 解析响应内容
@@ -14,24 +14,26 @@ from datetime import datetime
 from lxml import etree
 
 
-##########################################################
-# 创建一个 SimpleSpider 类，用于爬虫
-##########################################################
 class SimpleSpider:
+    """封装爬虫方法的类"""
 
-    # =======================================================
-    # 发送请求，获取响应内容
-    # =======================================================
     def __get_target_response(self, target):
+        """
+        发送请求，获取响应内容
+
+        :param target(str): 目标网页链接
+        """
         # 向目标 url 发送一个 get 请求，返回一个 response 对象
         res = requests.get(target)
         # 返回目标 url 的网页 html 文本
         return res.text
 
-    # =======================================================
-    # 解析响应内容，使用 XPath 解析 html 文本，并保存
-    # =======================================================
     def __parse_html(self, res):
+        """
+        解析响应内容，使用 XPath 解析 html 文本，并保存
+
+        :param res(str): 目标网页的 html 文本
+        """
         # 初始化生成一个 XPath 解析对象，获取 html 内容元素
         dom = etree.HTML(res)
         # 获取 h1 标签中的文字内容，其中 dom.xpath('//h1/text()')返回的是数组，提取一个元素
@@ -62,12 +64,14 @@ class SimpleSpider:
             for txt in paragraphs:
                 ft.write(txt + '\n\n')
 
-    # =======================================================
-    # 将上述步骤连在一起
-    # =======================================================
     def crawl_web_content(self, target):
+        """
+        爬虫执行方法
+
+        :param target(str): 目标网页链接
+        """
         res = self.__get_target_response(target)
-        return self.__parse_html(res)
+        self.__parse_html(res)
 
 
 ##########################################################
@@ -76,4 +80,6 @@ class SimpleSpider:
 if __name__ == '__main__':
     url = 'https://www.archdaily.cn/cn/915495/luo-shan-ji-guo-ji-ji-chang-xin-lu-ke-jie-yun-xi-tong-yi-dong-gong'
     spider = SimpleSpider()
-    spider.crawl_web_content(url)
+    # spider.crawl_web_content(url)
+    help(spider)
+
